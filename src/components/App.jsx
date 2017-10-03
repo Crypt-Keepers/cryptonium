@@ -3,25 +3,36 @@ import Search from './Search';
 import DataDisplay from './DataDisplay';
 import Panel from './Panel';
 import News from './News';
-// import Model from '../model-view';
 import dummyData from '../data.json';
-// import helpers from '../helpers/api-helpers';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: dummyData,
+      curCoin: '',
+      list: [],
     };
+
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleSearch(coin, isAdded = true) {
+    let newString = `${this.state.curCoin} ${coin.toLowerCase().trim()}`;
+    if (!isAdded) {
+      const re = new RegExp(coin, 'gi');
+      newString = newString.replace(re, '');
+    }
+    this.setState({ curCoin: newString.trim() });
   }
 
   render() {
     return (
       <div>
-        <Search />
+        <Search onSearch={this.handleSearch} />
         <DataDisplay data={this.state.data} />
         <Panel />
-        <News />
+        <News coin={this.state.curCoin} list={this.state.list} />
       </div>
     );
   }

@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var request = require('request');
 
 var app = require('../server/index.js');
-var port = 4568;
+// var port = 4568;
 
 //TODO: Fix me once schema is done.
 // This is an example of how to clear Mongo schema before each test

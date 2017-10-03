@@ -1,0 +1,12 @@
+.menu-hide, .menu-show {
+    font-size: 15px;
+    max-height: 0;
+    overflow-y: hidden;
+    -webkit-transition: max-height 0.5s ease-in-out;
+    -moz-transition: max-height 0.5s ease-in-out;
+    -o-transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
+}
+.menu-show {
+    max-height: 1000px;
+}
