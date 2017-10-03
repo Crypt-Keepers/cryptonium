@@ -8,41 +8,73 @@ class DataDisplay extends React.Component {
     };
   }
 
+  // need to figure out good data to use to render data
+  // each time data refreshes
   componentDidMount() {
-    this.displayData();
+    this.renderTimeSeriesData();
   }
 
-  displayData() {
-    const datapoints = this.props.data.length; // 200 for gdax
+  renderTimeSeriesData() {
+    // svg / line graph settings, hardcoded, customizable
     const width = 600;
     const height = 400;
     const padding = 40;
+    const xTicks = 6;
+    const yTicks = 4;
 
+    // extract time and close info from data
+    const data = [];
+    this.props.data.map((row) => {
+      data.push({ time: new Date(row[0] * 1000), close: row[4] });
+    });
 
-    let svg = d3.select('#data-display').append('svg').attr('width', width).attr('height', height);
+    const svg = d3.select('#data-display')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
 
-    let timeEnd = new Date(this.props.data[0][0] * 1000);
-    let timeStart = new Date(this.props.data[this.props.data.length - 1][0] * 1000);
-    console.log(timeEnd, timeStart);
+    // x range is set this way because data given reverse-chronologically
+    const x = d3.scaleTime()
+      .range([padding, (width - padding)]);
 
-    let xScale = d3.scaleTime().domain([timeEnd, timeStart]).range([(width - 2 * padding), 0]);
-    let yScale = d3.scaleLinear().domain([4000, 4400]).range([(height - 2 * padding), 0]); // find y min and max
+    const y = d3.scaleLinear()
+      .range([(height - padding), padding]);
 
-    let xAxis = d3.axisBottom(xScale).ticks(5);
-    let yAxis = d3.axisLeft(yScale).ticks(5);
+    // set x and y axis, use extend to calculate domain
+    const xAxis = d3
+      .axisBottom(x.domain(d3.extent(data, d => d.time)))
+      .ticks(xTicks);
+    const yAxis = d3
+      .axisLeft(y.domain(d3.extent(data, d => d.close)))
+      .ticks(yTicks);
 
-    svg.append('g').attr('transform', `translate(${padding}, ${height - padding})`).call(xAxis); // 30 is space from bottom
-    svg.append('g').attr('transform', `translate(${padding}, ${padding})`).call(yAxis);
+    // generate line
+    const line = d3.line()
+      .x(d => x(d.time))
+      .y(d => y(d.close));
+
+    // append everything
+    svg.append('g')
+      .attr('transform', `translate(0, ${height - padding})`)
+      .call(xAxis);
+
+    svg.append('g')
+      .attr('transform', `translate(${padding}, 0)`)
+      .call(yAxis);
+
+    svg.append('path')
+      .data([data])
+      .attr('fill', 'none')
+      .attr('stroke', 'blue')
+      .attr('d', line);
   }
 
   render() {
-    let rowData = this.props.data.map((row) => {
-      return (
-        <tr key={row[0]}>
-          <td>{row[0]}</td>
-          <td>{row[4]}</td>
-        </tr>
-      );
+    const rowData = this.props.data.map((row) => {
+      return <tr key={row[0]}>
+        <td>{row[0]}</td>
+        <td>{row[4]}</td>
+      </tr>;
     });
 
     return (
