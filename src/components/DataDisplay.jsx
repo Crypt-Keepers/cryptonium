@@ -1,20 +1,51 @@
 import React from 'react';
 import * as d3 from 'd3';
+import PropTypes from 'prop-types';
+import coinData from '../coin-data';
+
+const propTypes = {
+  coin: PropTypes.string,
+};
+
+const defaultProps = {
+  coin: '',
+};
 
 class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      coinData: [],
     };
+    this.setData = this.setData.bind(this);
+    this.renderTimeSeriesData = this.renderTimeSeriesData.bind(this);
   }
 
-  // need to figure out good data to use to render data
-  // each time data refreshes
   componentDidMount() {
-    this.renderTimeSeriesData();
+    this.setData(this.props.coin);
   }
 
-  renderTimeSeriesData() {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.coin !== nextProps.coin) {
+      this.setData(nextProps.coin);
+    }
+  }
+
+  setData(newCoin) {
+    const coinArr = (newCoin.length) ? newCoin.split(' ') : ['bitcoin', 'etherium', 'litecoin'];
+    let dataArr = [];
+    coinArr.forEach((coin) => {
+      if (coinData[coin]) {
+        dataArr.push(coinData[coin]);
+      }
+    });
+    this.setState({ coinData: dataArr }, () => this.renderTimeSeriesData(this.state.coinData[0]));
+  }
+
+  renderTimeSeriesData(coinData) {
+    // clear svg before every render
+    d3.selectAll('svg').remove();
+
     // svg / line graph settings, hardcoded, customizable
     const width = 600;
     const height = 400;
@@ -24,7 +55,7 @@ class DataDisplay extends React.Component {
 
     // extract time and close info from data
     const data = [];
-    this.props.data.map((row) => {
+    coinData.map((row) => {
       data.push({ time: new Date(row[0] * 1000), close: row[4] });
     });
 
@@ -70,27 +101,9 @@ class DataDisplay extends React.Component {
   }
 
   render() {
-    const rowData = this.props.data.map((row) => {
-      return <tr key={row[0]}>
-        <td>{row[0]}</td>
-        <td>{row[4]}</td>
-      </tr>;
-    });
-
     return (
       <div>DataDisplay
         <div id="data-display"></div>
-        <table>
-          <thead>
-            <tr>
-              <th>time</th>
-              <th>close</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rowData}
-          </tbody>
-        </table>
         <button>1D</button>
         <button>1W</button>
         <button>1M</button>
@@ -99,5 +112,8 @@ class DataDisplay extends React.Component {
     );
   }
 }
+
+DataDisplay.propTypes = propTypes;
+DataDisplay.defaultProps = defaultProps;
 
 export default DataDisplay;
