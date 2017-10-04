@@ -1,8 +1,15 @@
 const router = require('express').Router();
 const controller = require('./controllers');
 
-// Connect controller methods to their corresponding routes
+router.get('/range', controller.range.get);
+router.get('/ticker', controller.ticker.get);
+router.get('/search', controller.search.get);
+router.get('/list', controller.list.get);
+router.post('/list', controller.list.post);
 
+
+router.get('/user', controller.user.get);
+router.post('/user', controller.user.post);
 
 // app.get('/', () => {
 //   // All 3 daily coin data
@@ -17,11 +24,6 @@ const controller = require('./controllers');
 //   // req.body: { coin: <coin id>, dateStart: <milliseconds>, dateEnd: <milliseconds>}
 //   // Send back coin data with NO metadata
 // });
-router.get('/range', controller.range.get);
-router.post('/range', controller.range.post);
-
-router.get('/ticker', controller.ticker.get);
-router.post('/ticker', controller.ticker.post);
 
 
 // app.get('/search', () => {
@@ -29,8 +31,6 @@ router.post('/ticker', controller.ticker.post);
 //   // req.body: {coin: <coin id>}
 //   // Send back news in date order
 // });
-router.get('/search', controller.search.get);
-router.post('/search', controller.search.post);
 
 
 // app.post('/list', () => {
@@ -43,11 +43,7 @@ router.post('/search', controller.search.post);
 //   // req.body: { username: <string> }
 //   // Send back news in date order
 // });
-router.get('/list', controller.list.get);
-router.post('/list', controller.list.post);
 
-router.get('/user', controller.user.get);
-router.post('/user', controller.user.post);
 
 
 module.exports = router;

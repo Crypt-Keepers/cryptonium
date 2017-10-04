@@ -12,7 +12,7 @@
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/index.js",
     "react-test": "jest",
-    "server-test": "mocha --bail --reporter nyan server_test/server.test.js; pkill -n node;",
+    "server-test": "mocha --bail --reporter nyan server/server_test/server.test.js; pkill -n node;",
     "postinstall": "webpack -p"
   },
   "dependencies": {
