@@ -1,7 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
-import coinData from '../coin-data';
+import helpers from '../helpers/api-helpers';
 
 const propTypes = {
   coin: PropTypes.string,
@@ -16,30 +16,29 @@ class DataDisplay extends React.Component {
     super(props);
     this.state = {
       coinData: [],
+      range: '1D',
     };
-    this.setData = this.setData.bind(this);
+    this.getRangeData = this.getRangeData.bind(this);
     this.renderTimeSeriesData = this.renderTimeSeriesData.bind(this);
   }
 
   componentDidMount() {
-    this.setData(this.props.coin);
+    const coin = (this.props.coin.length) ? this.props.coin.split(' ')[0] : 'bitcoin';
+    this.getRangeData(coin, '1D');
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.coin !== nextProps.coin) {
-      this.setData(nextProps.coin);
+      const coin = (nextProps.coin.length) ? nextProps.coin.split(' ')[0] : 'bitcoin';
+      this.getRangeData(coin, '1D');
     }
   }
 
-  setData(newCoin) {
-    const coinArr = (newCoin.length) ? newCoin.split(' ') : ['bitcoin', 'etherium', 'litecoin'];
-    let dataArr = [];
-    coinArr.forEach((coin) => {
-      if (coinData[coin]) {
-        dataArr.push(coinData[coin]);
-      }
-    });
-    this.setState({ coinData: dataArr }, () => this.renderTimeSeriesData(this.state.coinData[0]));
+  getRangeData(coin, range) {
+    helpers.getRangeData(coin, range)
+      .then((coinData) => {
+        this.setState({ coinData, range }, () => this.renderTimeSeriesData(this.state.coinData));
+      });
   }
 
   renderTimeSeriesData(coinData) {
@@ -55,9 +54,7 @@ class DataDisplay extends React.Component {
 
     // extract time and close info from data
     const data = [];
-    coinData.map((row) => {
-      data.push({ time: new Date(row[0] * 1000), close: row[4] });
-    });
+    coinData.map(row => data.push({ time: new Date(row[0] * 1000), close: row[4] }));
 
     const svg = d3.select('#data-display')
       .append('svg')
@@ -100,14 +97,17 @@ class DataDisplay extends React.Component {
       .attr('d', line);
   }
 
+
   render() {
+    const coinName = (this.props.coin !== '') ? this.props.coin.split(' ')[0] : 'bitcoin';
+
     return (
-      <div>DataDisplay
+      <div>DataDisplay for {coinName}
         <div id="data-display"></div>
-        <button>1D</button>
-        <button>1W</button>
-        <button>1M</button>
-        <button>1Y</button>
+        <button onClick={() => this.getRangeData(coinName, '1D')}>1D</button>
+        <button onClick={() => this.getRangeData(coinName, '1W')}>1W</button>
+        <button onClick={() => this.getRangeData(coinName, '1M')}>1M</button>
+        <button onClick={() => this.getRangeData(coinName, '1Y')}>1Y</button>
       </div>
     );
   }
