@@ -3,13 +3,13 @@ import Search from './Search';
 import DataDisplay from './DataDisplay';
 import Panel from './Panel';
 import News from './News';
-import dummyData from '../data.json';
+// import dummyData from '../data.json';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: dummyData,
+      // data: dummyData,
       curCoin: '',
       list: [],
     };
@@ -30,7 +30,7 @@ export default class App extends React.Component {
     return (
       <div>
         <Search onSearch={this.handleSearch} />
-        <DataDisplay data={this.state.data} />
+        <DataDisplay coin={this.state.curCoin} />
         <Panel />
         <News coin={this.state.curCoin} list={this.state.list} />
       </div>
