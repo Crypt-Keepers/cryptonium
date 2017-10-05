@@ -1,7 +1,5 @@
 import React from 'react';
-import uniqBy from 'lodash/uniqBy';
 import PropTypes from 'prop-types';
-import newsData from '../news-data';
 import NewsItem from './NewsItem';
 import helpers from '../helpers/api-helpers';
 

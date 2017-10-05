@@ -16,7 +16,6 @@ class Overview extends React.Component {
   componentDidMount() {
     helpers.getTickerData()
       .then((tickerData) => {
-        console.log(tickerData);
         tickerData.forEach((coinObj) => {
           this.setState({ [coinObj.coin]: coinObj.data });
         });

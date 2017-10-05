@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import helpers from '../helpers/api-helpers';
 
@@ -75,12 +76,14 @@ class DataDisplay extends React.Component {
       range: '1D',
       isLoading: false,
     };
+
     this.getRangeData = this.getRangeData.bind(this);
   }
 
   componentDidMount() {
     const coin = (this.props.activeCoin.length) ? this.props.activeCoin : 'bitcoin';
     this.getRangeData(coin, '1D');
+    this.getRangeData = debounce(this.getRangeData.bind(this), 1000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -91,6 +94,7 @@ class DataDisplay extends React.Component {
   }
 
   getRangeData(coin, range) {
+    console.log('in getRangeData');
     this.spinner(true);
     helpers.getRangeData(coin, range)
       .then((coinData) => {
