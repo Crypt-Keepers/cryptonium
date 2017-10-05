@@ -66,7 +66,7 @@ const getTickerData = () => {
         url: '/ticker',
         data: { coin },
       }).done((data) => {
-        resolve({ [coin]: data });
+        resolve({ coin, data });
       }).fail((error) => {
         reject(error);
       });

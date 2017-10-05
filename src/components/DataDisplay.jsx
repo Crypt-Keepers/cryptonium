@@ -75,6 +75,7 @@ class DataDisplay extends React.Component {
       range: '1D',
       isLoading: false,
     };
+
     this.getRangeData = this.getRangeData.bind(this);
   }
 
@@ -86,7 +87,7 @@ class DataDisplay extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.activeCoin !== nextProps.activeCoin) {
       const coin = (nextProps.activeCoin.length) ? nextProps.activeCoin : 'bitcoin';
-      this.getRangeData(coin, '1D');
+      this.getRangeData(coin, this.state.range);
     }
   }
 
@@ -107,8 +108,9 @@ class DataDisplay extends React.Component {
     const coinName = (this.props.activeCoin.length) ? this.props.activeCoin : 'bitcoin';
 
     return (
-      <div className="data-display-container">Value of {coinName} in USD plotted over {this.state.range} range
-        <div id="data-display"></div>
+      <div className="data-display-container">
+        Value of {coinName} in USD plotted over {this.state.range} range
+        <div id="data-display" />
         <div className={this.state.isLoading ? 'data-overlay' : ''} />
         <div className={this.state.isLoading ? 'loader' : ''} />
         <button onClick={() => this.getRangeData(coinName, '1D')}>1D</button>

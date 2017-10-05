@@ -94,3 +94,7 @@ a {
     height: 400px;
     top: 0%;
 }
+
+.coin-item:hover {
+    font-weight: bold;
+}

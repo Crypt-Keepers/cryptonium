@@ -69,7 +69,6 @@ export default class App extends React.Component {
   handlePanelClick(coin) {
     // TODO: Pass coin down to data display so new graph can be rendered
     if (this.state.activeCoin !== coin) {
-      console.log('changing active coin', coin);
       this.setState({ activeCoin: coin });
     }
   }
@@ -104,7 +103,7 @@ export default class App extends React.Component {
             <input type="submit" value="Submit" />
           </form>
         </Modal>
-        <Search onSearch={this.handleSearch} handleAdd={this.handleAdd} />
+        {/* <Search onSearch={this.handleSearch} handleAdd={this.handleAdd} /> */}
         <div className="data-container">
           <DataDisplay activeCoin={this.state.activeCoin} />
           <Panel
@@ -113,7 +112,7 @@ export default class App extends React.Component {
             handleClick={this.handlePanelClick}
           />
         </div>
-        <News coin={this.state.coinList} list={this.state.list} />
+        <News activeCoin={this.state.activeCoin} />
       </div>
     );
   }
