@@ -6,11 +6,13 @@ import MyFinances from './MyFinances';
 const propTypes = {
   coin: PropTypes.string,
   list: PropTypes.arrayOf(PropTypes.string),
+  handleClick: PropTypes.func,
 };
 
 const defaultProps = {
   coin: '',
   list: [],
+  handleClick: () => {},
 };
 
 class Panel extends React.Component {
@@ -33,7 +35,7 @@ class Panel extends React.Component {
         <div>Side Panel</div>
         <div className="nav">
           <button onClick={() => this.changePanel('trending')}>
-            Panel - Trending
+            Coin Overview
           </button>
           <button onClick={() => this.changePanel('myList')}>
             Panel - My List
@@ -41,8 +43,8 @@ class Panel extends React.Component {
         </div>
         <div className="main">
           {this.state.view === 'trending'
-            ? <Overview />
-            : <MyFinances list={this.props.list} handleClick={this.props.handleClick}/>}
+            ? <Overview handleClick={this.props.handleClick} />
+            : <MyFinances />}
         </div>
       </div>
     );
