@@ -1,6 +1,5 @@
 import React from 'react';
 import * as d3 from 'd3';
-import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import helpers from '../helpers/api-helpers';
 
@@ -83,7 +82,6 @@ class DataDisplay extends React.Component {
   componentDidMount() {
     const coin = (this.props.activeCoin.length) ? this.props.activeCoin : 'bitcoin';
     this.getRangeData(coin, '1D');
-    this.getRangeData = debounce(this.getRangeData.bind(this), 1000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -112,7 +110,7 @@ class DataDisplay extends React.Component {
     return (
       <div className="data-display-container">
         Value of {coinName} in USD plotted over {this.state.range} range
-        <div id="data-display"></div>
+        <div id="data-display" />
         <div className={this.state.isLoading ? 'data-overlay' : ''} />
         <div className={this.state.isLoading ? 'loader' : ''} />
         <button onClick={() => this.getRangeData(coinName, '1D')}>1D</button>
