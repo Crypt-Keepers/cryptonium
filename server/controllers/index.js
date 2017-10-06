@@ -21,7 +21,8 @@ module.exports = {
   },
   ticker: {
     get: (req, res) => {
-      gdax.getTickerData('BTC')
+      const { coin } = req.query;
+      gdax.getTickerData(coin)
         .then((ticker) => {
           res.json(ticker);
         })
@@ -33,7 +34,7 @@ module.exports = {
   },
   search: {
     get: (req, res) => {
-      let {currency} = req.query; // get currency from req.query
+      let { currency } = req.query; // get currency from req.query
 
       models.search.get(currency)
         .then((data) => {
@@ -64,18 +65,17 @@ module.exports = {
 
   user: {
     get: (req, res) => {
-      models.user.get()
+      const { username } = req.query;
+      // db.findUser(username)
+        db.User.findOne({ username })
         .then((data) => {
-          res.status(200).send(data);
+          return data || db.User.create({ username });
         })
-        .catch((err) => {
-          res.status(404).send();
-          throw err;
-        });
+        .then(res.sendStatus(200));
     },
     post: (req, res) => {
       const { username, coin, quantity } = req.body;
-      db.updateWatchList(username, coin, quantity)
+      db.updatePosition(username, coin, quantity)
         .then(res.sendStatus(201));
     },
   },
