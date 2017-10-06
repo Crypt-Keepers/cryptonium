@@ -1,4 +1,3 @@
-const request = require('request');
 const rp = require('request-promise');
 
 const getTimeSeriesByRange = (coin = 'BTC', dateStart, dateEnd, granularity, currency = 'USD') => {
@@ -20,7 +19,6 @@ const getTimeSeriesByRange = (coin = 'BTC', dateStart, dateEnd, granularity, cur
     .catch(err => console.error(err));
 };
 
-
 const getTickerData = (coin = 'BTC', currency = 'USD') => {
   const options = {
     url: `https://api.gdax.com/products/${coin}-${currency}/ticker`,
@@ -35,5 +33,7 @@ const getTickerData = (coin = 'BTC', currency = 'USD') => {
     .catch(err => console.error(err));
 };
 
-module.exports.getTimeSeriesByRange = getTimeSeriesByRange;
-module.exports.getTickerData = getTickerData;
+module.exports = {
+  getTimeSeriesByRange,
+  getTickerData,
+};

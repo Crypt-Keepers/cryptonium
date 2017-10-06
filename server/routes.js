@@ -1,15 +1,17 @@
 const router = require('express').Router();
 const controller = require('./controllers');
 
-router.get('/range', controller.range.get);
-router.get('/ticker', controller.ticker.get);
-router.get('/search', controller.search.get);
 router.get('/list', controller.list.get);
-router.post('/list', controller.list.post);
 
+router.get('/range', controller.range.get);
+
+router.get('/search', controller.search.get);
+
+router.get('/ticker', controller.ticker.get);
 
 router.get('/user', controller.user.get);
 router.post('/user', controller.user.post);
+
 
 // app.get('/', () => {
 //   // All 3 daily coin data
@@ -25,14 +27,11 @@ router.post('/user', controller.user.post);
 //   // Send back coin data with NO metadata
 // });
 
-router.get('/ticker', controller.ticker.get);
-
 // app.get('/search', () => {
 //   // get news for specific coin
 //   // req.body: {coin: <coin id>}
 //   // Send back news in date order
 // });
-
 
 // app.post('/list', () => {
 //   // Add coin to user's watchlist in DB
@@ -44,7 +43,5 @@ router.get('/ticker', controller.ticker.get);
 //   // req.body: { username: <string> }
 //   // Send back news in date order
 // });
-
-
 
 module.exports = router;

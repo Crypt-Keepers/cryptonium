@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cryptonium';
 
 mongoose.connect(MONGODB_URI);
@@ -14,8 +15,6 @@ const userSchema = new Schema({
 });
 const User = mongoose.model('User', userSchema);
 
-
-
 const updatePosition = (user, coin, quantity) => {
   return User.collection.findOneAndUpdate(
     { username: user },
@@ -24,6 +23,7 @@ const updatePosition = (user, coin, quantity) => {
   );
 };
 
-
-module.exports.User = User;
-module.exports.updatePosition = updatePosition;
+module.exports = {
+  User,
+  updatePosition,
+};
