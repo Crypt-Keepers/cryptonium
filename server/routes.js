@@ -3,6 +3,8 @@ const controller = require('./controllers');
 
 router.get('/range', controller.range.get);
 router.get('/ticker', controller.ticker.get);
+// router.get('/sma', controller.sma.get);
+
 router.get('/search', controller.search.get);
 router.get('/list', controller.list.get);
 router.post('/list', controller.list.post);
