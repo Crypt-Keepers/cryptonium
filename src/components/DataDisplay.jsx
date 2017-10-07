@@ -13,7 +13,7 @@ const defaultProps = {
 
 const coinColor = {
   Bitcoin: '#81F7E5',
-  Etherium: '#7DDF64',
+  Ethereum: '#7DDF64',
   Litecoin: '#F7567C',
 };
 

@@ -17,13 +17,13 @@ const defaultProps = {
 
 const coinName = {
   BTC: 'Bitcoin',
-  ETH: 'Etherium',
+  ETH: 'Ethereum',
   LTC: 'Litecoin',
 };
 
 const coinColor = {
   Bitcoin: '#81F7E5',
-  Etherium: '#7DDF64',
+  Ethereum: '#7DDF64',
   Litecoin: '#F7567C',
 };
 
@@ -184,7 +184,7 @@ class MyFinances extends React.Component {
             onChange={e => this.setState({ coin: e.target.value })}
           >
             <option value="BTC">Bitcoin</option>
-            <option value="ETH">Etherium</option>
+            <option value="ETH">Ethereum</option>
             <option value="LTC">Litecoin</option>
           </select>
           <input

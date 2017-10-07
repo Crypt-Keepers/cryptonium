@@ -19,7 +19,7 @@ class News extends React.Component {
       trending: [],
       Bitcoin: [],
       Litecoin: [],
-      Etherium: [],
+      Ethereum: [],
     };
 
     this.setTrendingData = this.setTrendingData.bind(this);
@@ -63,7 +63,7 @@ class News extends React.Component {
   }
 
   refreshNews() {
-    const newsArr = ['trending', 'Bitcoin', 'Litecoin', 'Etherium'];
+    const newsArr = ['trending', 'Bitcoin', 'Litecoin', 'Ethereum'];
     newsArr.forEach((el) => {
       if (this.state[el].length) {
         if (el === 'trending') {
