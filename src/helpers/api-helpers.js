@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 import $ from 'jquery';
 
-const translateCoin = { Bitcoin: 'BTC', Etherium: 'ETH', Litecoin: 'LTC' };
+const translateCoin = { Bitcoin: 'BTC', Ethereum: 'ETH', Litecoin: 'LTC' };
 
 const getRangeData = (coinName, range) => {
   const coin = translateCoin[coinName];
@@ -105,4 +105,3 @@ const postUserData = (username, coin, quantity) => (
 );
 
 export default { getRangeData, getTrendingNews, getCoinData, getTickerData, getUserData, postUserData };
-

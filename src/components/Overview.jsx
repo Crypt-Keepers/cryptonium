@@ -68,41 +68,13 @@ class Overview extends React.Component {
             <TableRow
               coin={this.state.ETH}
               name="ETH"
-              onClick={() => { this.props.handleClick('Etherium'); }}
+              onClick={() => { this.props.handleClick('Ethereum'); }}
             />
           </tbody>
         </table>
         <div className="table-date">
           Last updated at {(new Date(this.state.BTC.time || 0)).toTimeString()}
         </div>
-
-        {/* <div
-          className="coin-item"
-          onClick={() => { this.props.handleClick('bitcoin'); }}
-          role="menuitem"
-          tabIndex="0"
-        >
-          Bitcoin
-          <OverviewItem coin={this.state.BTC} />
-        </div>
-        <div
-          className="coin-item"
-          onClick={() => { this.props.handleClick('litecoin'); }}
-          role="menuitem"
-          tabIndex="0"
-        >
-          Litecoin
-          <OverviewItem coin={this.state.LTC} />
-        </div>
-        <div
-          className="coin-item"
-          onClick={() => { this.props.handleClick('etherium'); }}
-          role="menuitem"
-          tabIndex="0"
-        >
-          Etherium
-          <OverviewItem coin={this.state.ETH} />
-        </div> */}
       </div>
     );
   }
