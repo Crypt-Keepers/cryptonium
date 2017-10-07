@@ -37,21 +37,31 @@ button:focus {
     flex-direction: column;
 }
 
-.data-button-bar button {
+.data-button-bar {
+    margin-left: 10px;
+}
+
+.wallet-entry button {
     border: 1px solid black;
     border-radius: 2px;
     background-color: white;
     margin: 3px;
 }
-.data-button-bar button:hover {
+
+.data-button-bar button:hover, .wallet-entry button:hover {
     font-weight: bold;
     cursor: pointer;
+}
+
+.data-button-bar > .select, .data-button-bar > .unselect {
+    border: 1px solid black;
+    border-radius: 2px;
+    margin: 3px;
 }
 
 .top-button-bar > .select, .top-button-bar > .unselect {
     border: 1px solid #162521;
     border-right: none;
-    /*background-color: white;*/
     width: 5em;
     border-bottom: 1px solid #162521;
 }
@@ -78,6 +88,7 @@ button img {
     height: 15em;
     overflow-y: scroll;
     margin-bottom: 1em;
+    background-color: #58C7C9;
 }
 
 .news-item {
@@ -87,6 +98,7 @@ button img {
     border: 1px solid black;
     cursor: pointer;
     border-radius: 2px;
+    background-color: white;
 }
 
 .news-item:hover {
@@ -119,7 +131,7 @@ a {
 
 .loader {
     border: 16px solid #f3f3f3;
-    border-top: 16px solid #66D7D1;
+    border-top: 16px solid #58C7C9;
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -151,7 +163,9 @@ a {
 .data-title {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
+    justify-content: flex-start;
+    align-items: center;
 }
 
 th, td {
@@ -207,7 +221,6 @@ tr:hover {
     border: 1px solid #162521;
     border-radius: 2px;
     border-bottom: none;
-
 }
 
 .select {
@@ -248,7 +261,6 @@ tr:hover {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    /*width: 10%;*/
     font-family: 'Geo', sans-serif;
     font-size: 1.2em;
     padding-right: 1em;

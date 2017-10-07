@@ -12,9 +12,9 @@ const defaultProps = {
 };
 
 const coinColor = {
-  Bitcoin: '#81F7E5',
-  Ethereum: '#7DDF64',
-  Litecoin: '#F7567C',
+  Bitcoin: '#D3D4D9',
+  Ethereum: '#B95F89',
+  Litecoin: '#4B88A2',
 };
 
 const renderTimeSeriesData = (coin, coinData) => {
@@ -123,18 +123,41 @@ class DataDisplay extends React.Component {
   }
 
   render() {
+    const dClass = this.state.range === '1D' ? 'select' : 'unselect';
+    const wClass = this.state.range === '1W' ? 'select' : 'unselect';
+    const mClass = this.state.range === '1M' ? 'select' : 'unselect';
+    const yClass = this.state.range === '1Y' ? 'select' : 'unselect';
     return (
       <div className="data-display-container">
         <div className="data-title">
           <div>
-            Value of {this.props.activeCoin} in USD plotted over {this.state.range} range
+            Value of {this.props.activeCoin} in USD over
           </div>
           <div className="data-button-bar">
-            Change range:
-            <button onClick={() => this.getRangeData(this.props.activeCoin, '1D')}>1D</button>
-            <button onClick={() => this.getRangeData(this.props.activeCoin, '1W')}>1W</button>
-            <button onClick={() => this.getRangeData(this.props.activeCoin, '1M')}>1M</button>
-            <button onClick={() => this.getRangeData(this.props.activeCoin, '1Y')}>1Y</button>
+            <button
+              onClick={() => this.getRangeData(this.props.activeCoin, '1D')}
+              className={dClass}
+            >
+              1D
+            </button>
+            <button
+              onClick={() => this.getRangeData(this.props.activeCoin, '1W')}
+              className={wClass}
+            >
+              1W
+            </button>
+            <button
+              onClick={() => this.getRangeData(this.props.activeCoin, '1M')}
+              className={mClass}
+            >
+              1M
+            </button>
+            <button
+              onClick={() => this.getRangeData(this.props.activeCoin, '1Y')}
+              className={yClass}
+            >
+              1Y
+            </button>
           </div>
         </div>
         <div id="data-display" />

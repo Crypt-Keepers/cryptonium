@@ -22,9 +22,9 @@ const coinName = {
 };
 
 const coinColor = {
-  Bitcoin: '#81F7E5',
-  Ethereum: '#7DDF64',
-  Litecoin: '#F7567C',
+  Bitcoin: '#D3D4D9',
+  Ethereum: '#B95F89',
+  Litecoin: '#4B88A2',
 };
 
 class MyFinances extends React.Component {
@@ -91,9 +91,9 @@ class MyFinances extends React.Component {
     d3.select('#pie-chart').selectAll('svg').remove();
 
     // customizable parameters
-    const width = 240;
-    const height = 240;
-    const radius = 90;
+    const width = 200;
+    const height = 205;
+    const radius = 85;
     const labelPadding = 40;
     const animationPadding = 20;
 
@@ -177,8 +177,8 @@ class MyFinances extends React.Component {
       </tr>
     ));
     return (
-      <div className={this.props.className}>
-        <div>
+      <div className={`my-finance ${this.props.className}`}>
+        <div className="wallet-entry">
           <select
             value={this.state.coin}
             onChange={e => this.setState({ coin: e.target.value })}
