@@ -11,6 +11,21 @@ const defaultProps = {
   activeCoin: 'Bitcoin',
 };
 
+const parseData = (arr) => {
+  return arr.sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+    if (dateA - dateB > 0) {
+      return -1;
+    }
+    if (dateA - dateB < 0) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
+
 class News extends React.Component {
   constructor(props) {
     super(props);
@@ -45,14 +60,14 @@ class News extends React.Component {
     if (fetchTrending) {
       helpers.getTrendingNews()
         .then((data) => {
-          this.setState({ trending: data.results });
+          this.setState({ trending: parseData(data.results) });
         })
         .catch(err => (err));
     }
     if (!this.state[newCoin].length) {
       helpers.getCoinData(newCoin)
         .then((data) => {
-          this.setState({ [newCoin]: data.results });
+          this.setState({ [newCoin]: parseData(data.results) });
         })
         .catch(err => (err));
     }
@@ -69,13 +84,13 @@ class News extends React.Component {
         if (el === 'trending') {
           helpers.getTrendingNews()
             .then((data) => {
-              this.setState({ trending: data.results });
+              this.setState({ trending: parseData(data.results) });
             })
             .catch(err => (err));
         } else {
           helpers.getCoinData(el)
             .then((data) => {
-              this.setState({ [el]: data.results });
+              this.setState({ [el]: parseData(data.results) });
             })
             .catch(err => (err));
         }
