@@ -11,8 +11,8 @@ const defaultProps = {
   activeCoin: 'Bitcoin',
 };
 
-const parseData = (arr) => {
-  return arr.sort((a, b) => {
+const parseData = arr => (
+  arr.sort((a, b) => {
     const dateA = new Date(a.created_at);
     const dateB = new Date(b.created_at);
     if (dateA - dateB > 0) {
@@ -22,8 +22,8 @@ const parseData = (arr) => {
       return 1;
     }
     return 0;
-  });
-};
+  })
+);
 
 
 class News extends React.Component {
