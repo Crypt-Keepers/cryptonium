@@ -7,7 +7,7 @@ const propTypes = {
     title: PropTypes.string,
     published_at: PropTypes.string,
     source: PropTypes.objectOf(PropTypes.string),
-  }),
+  }).isRequired,
 };
 
 const defaultProps = {

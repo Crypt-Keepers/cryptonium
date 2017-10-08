@@ -1,13 +1,13 @@
-# Project Name
+# Cryptonium
 
-> Pithy project description
+Track Bitcoin, Litecoin, and Ethereum performance and news.
 
 ## Team
 
-  - teamMember
-  - teamMember
-  - teamMember
-  - teamMember
+  - Cecily Smith
+  - Clara Cho
+  - Claire Johnson
+  - Nanda
 
 ## Table of Contents
 
@@ -21,15 +21,23 @@
 
 ## Usage
 
-> Some usage instructions
+ - Server Routes:
+
+ - D3:
+
+ - APIs:
+
+ - Redux:
+
+ - Components:
 
 ## Requirements
 
 - Node 6.4.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- MongoDB x.x.x
+- React 16.0.x
+- Redux 3.7.x
+- Webpack 3.6.x
 
 ## Development
 
@@ -38,9 +46,7 @@
 From within the root directory:
 
 ```sh
-npm install -g bower
 npm install
-bower install
 ```
 
 ### Roadmap

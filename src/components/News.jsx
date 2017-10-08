@@ -1,53 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../actions/newsActions';
 import NewsItem from './NewsItem';
-import helpers from '../helpers/api-helpers';
 
 const propTypes = {
-  activeCoin: PropTypes.string,
+  activeCoin: PropTypes.string.isRequired,
+  fetchTrending: PropTypes.func.isRequired,
+  trending: PropTypes.arrayOf(PropTypes.object).isRequired,
+  curSelection: PropTypes.string.isRequired,
+  coinNewsObj: PropTypes.objectOf(PropTypes.array).isRequired,
+  changeSelection: PropTypes.func.isRequired,
+  fetchCoinNews: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   activeCoin: 'Bitcoin',
+  fetchTrending: e => (e),
+  changeSelection: e => (e),
+  fetchCoinNews: e => (e),
+  trending: [],
+  curSelection: 'trending',
+  coinNewsObj: {},
 };
-
-const parseData = arr => (
-  arr.sort((a, b) => {
-    const dateA = new Date(a.created_at);
-    const dateB = new Date(b.created_at);
-    if (dateA - dateB > 0) {
-      return -1;
-    }
-    if (dateA - dateB < 0) {
-      return 1;
-    }
-    return 0;
-  })
-);
-
 
 class News extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      curSelection: 'trending',
-      trending: [],
-      Bitcoin: [],
-      Litecoin: [],
-      Ethereum: [],
-    };
-
     this.setTrendingData = this.setTrendingData.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.refreshNews = this.refreshNews.bind(this);
 
+    this.setTrendingData('Bitcoin', true);
+
     setInterval(() => {
       this.refreshNews();
     }, (60000 * 3));
-  }
-
-  componentDidMount() {
-    this.setTrendingData('Bitcoin', true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,60 +47,46 @@ class News extends React.Component {
 
   setTrendingData(newCoin, fetchTrending) {
     if (fetchTrending) {
-      helpers.getTrendingNews()
-        .then((data) => {
-          this.setState({ trending: parseData(data.results) });
-        })
-        .catch(err => (err));
+      this.props.fetchTrending();
     }
-    if (!this.state[newCoin].length) {
-      helpers.getCoinData(newCoin)
-        .then((data) => {
-          this.setState({ [newCoin]: parseData(data.results) });
-        })
-        .catch(err => (err));
+    const curCoinNews = this.props.coinNewsObj[newCoin];
+    if (!curCoinNews) {
+      this.props.fetchCoinNews(newCoin);
     }
 
-    if (this.state.curSelection !== 'trending') {
-      this.setState({ curSelection: newCoin });
+    if (this.props.curSelection !== 'trending') {
+      this.props.changeSelection(newCoin);
     }
   }
 
   refreshNews() {
-    const newsArr = ['trending', 'Bitcoin', 'Litecoin', 'Ethereum'];
+    this.props.fetchTrending();
+    const newsArr = ['Bitcoin', 'Litecoin', 'Ethereum'];
     newsArr.forEach((el) => {
-      if (this.state[el].length) {
-        if (el === 'trending') {
-          helpers.getTrendingNews()
-            .then((data) => {
-              this.setState({ trending: parseData(data.results) });
-            })
-            .catch(err => (err));
-        } else {
-          helpers.getCoinData(el)
-            .then((data) => {
-              this.setState({ [el]: parseData(data.results) });
-            })
-            .catch(err => (err));
-        }
+      const cur = this.props.coinNewsObj[el];
+      if (cur) {
+        this.props.fetchCoinNews(el);
       }
     });
   }
 
   handleClick(isTrending) {
-    if (isTrending && !this.state.curSelection !== 'trending') {
-      this.setState({ curSelection: 'trending' });
+    if (isTrending && !this.props.curSelection !== 'trending') {
+      this.props.changeSelection('trending');
     }
-    if (!isTrending && this.state.curSelection === 'trending') {
-      const newCoin = this.props.activeCoin ? this.props.activeCoin : 'Bitcoin';
-      this.setState({ curSelection: newCoin });
+    if (!isTrending && this.props.curSelection === 'trending') {
+      this.props.changeSelection(this.props.activeCoin);
     }
   }
 
   render() {
-    const curArr = this.state[this.state.curSelection];
-    const trendClass = this.state.curSelection === 'trending' ? 'select' : 'unselect';
-    const newsClass = this.state.curSelection === 'trending' ? 'unselect' : 'select';
+    const curArr =
+      (this.props.curSelection === 'trending'
+        ? this.props.trending
+        : this.props.coinNewsObj[this.props.curSelection]) || [];
+    const trendClass = this.props.curSelection === 'trending' ? 'select' : 'unselect';
+    const newsClass = this.props.curSelection === 'trending' ? 'unselect' : 'select';
+
     return (
       <div className="news-panel">
         <div className="top-button-bar">
@@ -135,4 +110,20 @@ class News extends React.Component {
 News.propTypes = propTypes;
 News.defaultProps = defaultProps;
 
-export default News;
+const mapStateToProps = (state = {}) => (
+  {
+    trending: state.newsTrending,
+    curSelection: state.newsSelect,
+    coinNewsObj: state.newsCoin,
+  }
+);
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    fetchTrending: actions.newsFetchTrending,
+    changeSelection: actions.changeNewsSelection,
+    fetchCoinNews: actions.newsFetchCoin,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(News);

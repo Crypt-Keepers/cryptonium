@@ -1,50 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import helpers from '../helpers/api-helpers';
-// import OverviewItem from './OverviewItem';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../actions/overviewActions';
+import { changeCoin } from '../actions/appActions';
 import TableRow from './TableRow';
 
 const propTypes = {
-  handleClick: PropTypes.func,
-  className: PropTypes.string,
+  handleClick: PropTypes.func.isRequired,
+  className: PropTypes.string.isRequired,
+  tickerFetch: PropTypes.func.isRequired,
+  tickerData: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const defaultProps = {
   handleClick: e => (e),
   className: '',
+  tickerFetch: e => (e),
+  tickerData: {},
 };
 
 class Overview extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      BTC: {},
-      LTC: {},
-      ETH: {},
-    };
+    super();
 
-    this.updateData = this.updateData.bind(this);
+    props.tickerFetch();
 
-    // Update ticker data every 3 minutes.
     setInterval(() => {
-      this.updateData();
+      props.tickerFetch();
     }, 60000 * 3);
   }
 
-  componentDidMount() {
-    this.updateData();
-  }
-
-  updateData() {
-    helpers.getTickerData()
-      .then((tickerData) => {
-        tickerData.forEach((coinObj) => {
-          this.setState({ [coinObj.coin]: coinObj.data });
-        });
-      });
-  }
-
   render() {
+    const { tickerData } = this.props;
+    const timeStr = tickerData.BTC ? tickerData.BTC.time : 0;
+
     return (
       <div className={`table-container ${this.props.className}`}>Click a coin to see data<br />
         <table>
@@ -56,24 +46,24 @@ class Overview extends React.Component {
               <th>Ask</th>
             </tr>
             <TableRow
-              coin={this.state.BTC}
+              coin={tickerData.BTC}
               name="BTC"
               onClick={() => { this.props.handleClick('Bitcoin'); }}
             />
             <TableRow
-              coin={this.state.LTC}
+              coin={tickerData.LTC}
               name="LTC"
               onClick={() => { this.props.handleClick('Litecoin'); }}
             />
             <TableRow
-              coin={this.state.ETH}
+              coin={tickerData.ETH}
               name="ETH"
               onClick={() => { this.props.handleClick('Ethereum'); }}
             />
           </tbody>
         </table>
         <div className="table-date">
-          Last updated at {(new Date(this.state.BTC.time || 0)).toTimeString()}
+          Last updated at {(new Date(timeStr)).toTimeString()}
         </div>
       </div>
     );
@@ -83,4 +73,17 @@ class Overview extends React.Component {
 Overview.propTypes = propTypes;
 Overview.defaultProps = defaultProps;
 
-export default Overview;
+const mapStateToProps = (state = {}) => (
+  {
+    tickerData: state.tickerData,
+  }
+);
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    tickerFetch: actions.tickerFetch,
+    handleClick: changeCoin,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Overview);

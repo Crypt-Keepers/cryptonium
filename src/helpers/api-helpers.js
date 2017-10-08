@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import $ from 'jquery';
 
 const translateCoin = { Bitcoin: 'BTC', Ethereum: 'ETH', Litecoin: 'LTC' };
@@ -39,7 +38,7 @@ const getTrendingNews = () => (
   })
 );
 
-const getCoinData = (coin) => {
+const getCoinNews = (coin) => {
   const coinSymbol = translateCoin[coin];
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -60,7 +59,7 @@ const getTickerData = () => {
   const coins = ['BTC', 'ETH', 'LTC'];
   const coinsArr = [];
   coins.forEach((coin) => {
-    coinsArr.push(new Promise((resolve, reject) => {
+    coinsArr.push(new Promise((resolve) => {
       $.ajax({
         url: '/ticker',
         method: 'GET',
@@ -68,7 +67,7 @@ const getTickerData = () => {
       }).done((data) => {
         resolve({ coin, data });
       }).fail((error) => {
-        reject(error);
+        throw error;
       });
     }));
   });
@@ -104,4 +103,11 @@ const postUserData = (username, coin, quantity) => (
   })
 );
 
-export default { getRangeData, getTrendingNews, getCoinData, getTickerData, getUserData, postUserData };
+export default {
+  getRangeData,
+  getTrendingNews,
+  getCoinNews,
+  getTickerData,
+  getUserData,
+  postUserData,
+};
