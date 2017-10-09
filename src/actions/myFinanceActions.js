@@ -15,15 +15,15 @@ export function dbGetSuccess(userData) {
 }
 
 export function getUserData(username) {
-  return (dispatch) => {
+  return dispatch => (
     helpers.getUserData(username)
       .then(data => (
         dispatch(dbGetSuccess(data))
       ))
-      .catch(() => {
-        dispatch(dbHasErrored(true));
-      });
-  };
+      .catch(() => (
+        dispatch(dbHasErrored(true))
+      ))
+  );
 }
 
 export function updateUserData(username, coin, quantity) {
@@ -32,8 +32,8 @@ export function updateUserData(username, coin, quantity) {
       .then(() => (
         dispatch(getUserData(username))
       ))
-      .catch(() => {
-        dispatch(dbHasErrored(true));
-      });
+      .catch(() => (
+        dispatch(dbHasErrored(true))
+      ));
   };
 }

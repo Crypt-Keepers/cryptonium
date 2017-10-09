@@ -41,9 +41,9 @@ export function newsFetchTrending() {
       .then(data => (
         dispatch(newsTrendingFetchDataSuccess(parseData(data.results)))
       ))
-      .catch(() => {
-        dispatch(newsHasErrored(true));
-      });
+      .catch(() => (
+        dispatch(newsHasErrored(true))
+      ));
   };
 }
 
@@ -60,8 +60,8 @@ export function newsFetchCoin(coin) {
       .then(data => (
         dispatch(newsCoinFetchDataSuccess(coin, parseData(data.results)))
       ))
-      .catch(() => {
-        dispatch(newsHasErrored(true));
-      });
+      .catch(() => (
+        dispatch(newsHasErrored(true))
+      ));
   };
 }

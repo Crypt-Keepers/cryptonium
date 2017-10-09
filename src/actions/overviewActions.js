@@ -20,8 +20,8 @@ export function tickerFetch() {
       .then(data => (
         dispatch(tickerFetchDataSuccess(data))
       ))
-      .catch(() => {
-        dispatch(tickerHasErrored(true));
-      });
+      .catch(() => (
+        dispatch(tickerHasErrored(true))
+      ));
   };
 }
