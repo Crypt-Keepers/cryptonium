@@ -14,8 +14,6 @@ const userSchema = new Schema({
 });
 const User = mongoose.model('User', userSchema);
 
-
-
 const updatePosition = (user, coin, quantity) => {
   return User.collection.findOneAndUpdate(
     { username: user },

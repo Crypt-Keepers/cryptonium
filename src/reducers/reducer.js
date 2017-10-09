@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 export function coin(state = 'Bitcoin', action) {
   switch (action.type) {
     case 'CHANGE_COIN':
       return action.payload.coin;
+=======
+export function changeCoin(state = 'Bitcoin', action) {
+  switch (action.type) {
+    case 'CHANGE_COIN':
+      return action.coin;
+>>>>>>> (feat) redux setup
     default:
       return state;
   }
 }
 
+<<<<<<< HEAD
 export function username(state = '', action) {
   switch (action.type) {
     case 'CHANGE_USERNAME':
@@ -74,13 +82,22 @@ export function tickerData(state = {}, action) {
       return state;
   }
 }
+<<<<<<< HEAD
 
 export function userData(state = {}, action) {
   switch (action.type) {
     case 'USER_DB_GET_SUCCESS': {
       return Object.assign({}, state, action.userData);
     }
+=======
+export function modalIsOpen(state = 'true', action) {
+  switch (action.type) {
+    case 'MODAL_IS_OPEN':
+      return action.isOpen;
+>>>>>>> (feat) redux setup
     default:
       return state;
   }
 }
+=======
+>>>>>>> (refactor) Add redux to panel, begin refactor for overview

@@ -4,6 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/overviewActions';
 import { changeCoin } from '../actions/appActions';
+<<<<<<< HEAD
+=======
+import helpers from '../helpers/api-helpers';
+>>>>>>> (refactor) Add redux to panel, begin refactor for overview
 import TableRow from './TableRow';
 
 const propTypes = {
@@ -75,6 +79,10 @@ Overview.defaultProps = defaultProps;
 
 const mapStateToProps = (state = {}) => (
   {
+<<<<<<< HEAD
+=======
+    // activeCoin: state.coin,
+>>>>>>> (refactor) Add redux to panel, begin refactor for overview
     tickerData: state.tickerData,
   }
 );

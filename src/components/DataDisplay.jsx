@@ -1,8 +1,22 @@
 import React from 'react';
 import * as d3 from 'd3';
+<<<<<<< HEAD
+<<<<<<< HEAD
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import helpers from '../helpers/api-helpers';
+=======
+import PropTypes from 'prop-types';
+import coinData from '../coin-data';
+
+const propTypes = {
+  coin: PropTypes.string,
+};
+
+const defaultProps = {
+  coin: '',
+};
+>>>>>>> graph selected coin, currently only one coin at a time
 
 const propTypes = {
   activeCoin: PropTypes.string.isRequired,
@@ -13,10 +27,15 @@ const defaultProps = {
 };
 
 // DataDisplay maintains its own state since graph data is not shared between components
+=======
+
+>>>>>>> display time/value table and render x-y axis correctly
 class DataDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
+<<<<<<< HEAD
       coinData: [],
       range: '1D',
       isLoading: false,
@@ -49,6 +68,39 @@ class DataDisplay extends React.Component {
   }
 
   renderTimeSeriesData(coin) {
+=======
+      coinData: [],
+    };
+    this.setData = this.setData.bind(this);
+    this.renderTimeSeriesData = this.renderTimeSeriesData.bind(this);
+  }
+
+  componentDidMount() {
+    this.setData(this.props.coin);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.coin !== nextProps.coin) {
+      this.setData(nextProps.coin);
+    }
+  }
+
+  setData(newCoin) {
+    const coinArr = (newCoin.length) ? newCoin.split(' ') : ['bitcoin', 'etherium', 'litecoin'];
+    let dataArr = [];
+    coinArr.forEach((coin) => {
+      if (coinData[coin]) {
+        dataArr.push(coinData[coin]);
+      }
+    });
+    this.setState({ coinData: dataArr }, () => this.renderTimeSeriesData(this.state.coinData[0]));
+  }
+
+  renderTimeSeriesData(coinData) {
+    // clear svg before every render
+    d3.selectAll('svg').remove();
+
+>>>>>>> graph selected coin, currently only one coin at a time
     // svg / line graph settings, hardcoded, customizable
     const width = 640;
     const height = 400;
@@ -112,7 +164,11 @@ class DataDisplay extends React.Component {
     // extract time and close info from data
     // reverse data which is given reverse-chronologically
     const data = [];
+<<<<<<< HEAD
     this.state.coinData.reverse().forEach((row) => {
+=======
+    coinData.map((row) => {
+>>>>>>> graph selected coin, currently only one coin at a time
       data.push({ time: new Date(row[0] * 1000), close: row[4] });
     });
 
@@ -248,10 +304,63 @@ class DataDisplay extends React.Component {
           <div className={this.state.isLoading ? 'data-overlay' : ''} />
           <div className={this.state.isLoading ? 'loader' : ''} />
         </div>
+=======
+    };
+  }
+
+  componentDidMount() {
+    this.displayData();
+  }
+
+  displayData() {
+    const datapoints = this.props.data.length; // 200 for gdax
+    const width = 600;
+    const height = 400;
+    const padding = 40;
+
+
+    let svg = d3.select('#data-display').append('svg').attr('width', width).attr('height', height);
+
+    let timeEnd = new Date(this.props.data[0][0] * 1000);
+    let timeStart = new Date(this.props.data[this.props.data.length - 1][0] * 1000);
+    console.log(timeEnd, timeStart);
+
+    let xScale = d3.scaleTime().domain([timeEnd, timeStart]).range([(width - 2 * padding), 0]);
+    let yScale = d3.scaleLinear().domain([4000, 4400]).range([(height - 2 * padding), 0]); // find y min and max
+
+    let xAxis = d3.axisBottom(xScale).ticks(5);
+    let yAxis = d3.axisLeft(yScale).ticks(5);
+
+    svg.append('g').attr('transform', `translate(${padding}, ${height - padding})`).call(xAxis); // 30 is space from bottom
+    svg.append('g').attr('transform', `translate(${padding}, ${padding})`).call(yAxis);
+  }
+
+  render() {
+<<<<<<< HEAD
+    let rowData = this.props.data.map((row) => {
+      return (
+        <tr key={row[0]}>
+          <td>{row[0]}</td>
+          <td>{row[4]}</td>
+        </tr>
+      );
+    });
+
+=======
+>>>>>>> graph selected coin, currently only one coin at a time
+    return (
+      <div>DataDisplay
+        <div id="data-display"></div>
+        <button>1D</button>
+        <button>1W</button>
+        <button>1M</button>
+        <button>1Y</button>
+>>>>>>> display time/value table and render x-y axis correctly
       </div>
     );
   }
 }
+<<<<<<< HEAD
 
 DataDisplay.propTypes = propTypes;
 DataDisplay.defaultProps = defaultProps;
@@ -261,5 +370,14 @@ const mapStateToProps = (state = {}) => (
     activeCoin: state.coin,
   }
 );
+=======
+>>>>>>> display time/value table and render x-y axis correctly
 
+<<<<<<< HEAD
 export default connect(mapStateToProps)(DataDisplay);
+=======
+DataDisplay.propTypes = propTypes;
+DataDisplay.defaultProps = defaultProps;
+
+export default DataDisplay;
+>>>>>>> graph selected coin, currently only one coin at a time

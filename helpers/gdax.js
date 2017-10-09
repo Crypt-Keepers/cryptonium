@@ -20,7 +20,6 @@ const getTimeSeriesByRange = (coin = 'BTC', dateStart, dateEnd, granularity, cur
     .catch(err => console.error(err));
 };
 
-
 const getTickerData = (coin = 'BTC', currency = 'USD') => {
   const options = {
     url: `https://api.gdax.com/products/${coin}-${currency}/ticker`,
