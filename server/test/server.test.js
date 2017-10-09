@@ -1,69 +1,115 @@
-// const request = require('request');
-// const expect = require('chai').expect;
-
-const expect = require('chai').expect;
 const supertest = require('supertest');
+const mongoose = require('mongoose');
+
+process.env.MONGODB_URI = 'mongodb://localhost:27017/cryptonium-test';
+
 const server = require('../index.js');
+
 const request = supertest.agent(server);
-const assert = require('assert');
 
+
+/**
+ * Cryptonoium Server tests
+ */
 describe('Cryptonoium Server tests', () => {
-  before(() => {
-    // runs before all tests in this block
+  /**
+   * runs before all tests in this block
+   */
+  before((done) => {
+    mongoose.connect(process.env.MONGODB_URI);
+    done();
   });
 
-  after(() => {
-    // runs after all tests in this block
+  /**
+   * runs after all tests in this block
+   */
+  after((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      done();
+    });
   });
 
+  /**
+   * runs before each test in this block
+   */
   beforeEach(() => {
-    // runs before each test in this block
   });
 
+  /**
+   * runs after each test in this block
+   */
   afterEach(() => {
-    // runs after each test in this block
   });
 
-  describe('Cryptonoium User tests', () => {
-    it('Should get user details');
-    it('Should post user details');
-  });
-
-  describe('Cryptonoium Search tests', () => {
-    xit('Should get news search for specific currency', (done) => {
-      // http://localhost:3000/search?currency=ETH
-      done();
+  /**
+   * Cryptonoium /user GET and POST tests
+   */
+  describe('Cryptonoium /user GET and POST tests', () => {
+    it('Should create user if user does not exist', (done) => {
+      request
+        .get('/user?username=foo')
+        .expect(201, done);
     });
-    xit('Should get news search for all currencies', (done) => {
-      // http://localhost:3000/search
-      done();
+
+    it('Should get user details if user exist', (done) => {
+      request
+        .get('/user?username=bar')
+        .expect(201, () => {
+          request.get('/user?username=bar')
+            .expect(200, done);
+        });
+    });
+
+    it('Should post user details', (done) => {
+      request
+        .post('/user')
+        .field('username', 'foo')
+        .field('coin', 'ETH')
+        .field('quantity', 100)
+        .expect(201, done);
     });
   });
 
+  /**
+   * Cryptonoium /search GET tests
+   */
+  describe('Cryptonoium /search GET tests', () => {
+    it('Should get news search for specific currency', (done) => {
+      request
+        .get('/search?currency=ETH')
+        .expect(200, done);
+    });
+
+    it('Should get news search for all currencies', (done) => {
+      request
+        .get('/search')
+        .expect(200, done);
+    });
+
+    it('Should get news search for invalid currency', (done) => {
+      request
+        .get('/search?currency=foo')
+        .expect(404, done);
+    });
+  });
+
+  /**
+   * Cryptonoium /range GET tests
+   * @type {String}
+   */
   describe('Cryptonoium Range tests', () => {
-    it('should return an array of time series data', (done) => {
+    it('Should get range data for specific coin, an array of time series data', (done) => {
+      request
+        .get('/range?coin=BTC&dateStart=1507489906442&dateEnd=1507576306442&granularity=432000')
+        .expect(200, done);
+    });
+
+    xit('Should get range details');
+
+    it('Should result in error for invalid range request', (done) => {
       request
         .get('/range')
-        .expect(200);
-      done();
-    });
-    it('Should get range details');
-  });
-
-  describe('Cryptonoium List tests', () => {
-    it('Should get list details');
-    it('Should post list details', (done) => {
-      request
-        .post('/list')
-        .send({ username: 'bob', coin: 'TST' })
-        .expect(201);
-      done();
-    });
-    xit('Adds coins to a user watchlist', (done) => {
-      done();
-    });
-    xit('Should not add duplicate coins to watchlist', (done) => {
-      done();
+        .expect(404, done);
     });
   });
 });

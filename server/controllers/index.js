@@ -1,23 +1,27 @@
 const models = require('../models');
 const gdax = require('../../helpers/gdax.js');
-const ta = require('../../helpers/techAnal.js');
 const db = require('../db/index.js');
 
 module.exports = {
   range: {
     get: (req, res) => {
       let { coin, dateStart, dateEnd, granularity } = req.query;
-      granularity /= 1000;
-      dateStart = Number(dateStart);
-      dateEnd = Number(dateEnd);
-      gdax.getTimeSeriesByRange(coin, dateStart, dateEnd, granularity)
-        .then((series) => {
-          res.json(series);
-        })
-        .catch((err) => {
-          console.error(err);
-          res.sendStatus(404);
-        });
+      try {
+        granularity /= 1000;
+        dateStart = Number(dateStart);
+        dateEnd = Number(dateEnd);
+        gdax.getTimeSeriesByRange(coin, dateStart, dateEnd, granularity)
+          .then((series) => {
+            res.json(series);
+          })
+          .catch((err) => {
+            res.sendStatus(404);
+            // console.error(err);
+          });
+      } catch (e) {
+        res.sendStatus(404);
+        // console.error(e);
+      }
     },
   },
   ticker: {
@@ -28,22 +32,21 @@ module.exports = {
           res.json(ticker);
         })
         .catch((err) => {
-          console.error(err);
           res.sendStatus(404);
+          console.error(err);
         });
     },
   },
   search: {
     get: (req, res) => {
-      let { currency } = req.query; // get currency from req.query
+      const { currency } = req.query;
 
       models.search.get(currency)
         .then((data) => {
           res.status(200).send(data);
         })
         .catch((err) => {
-          res.status(404).send();
-          throw err;
+          res.status(404).send(err);
         });
     },
   },
@@ -57,7 +60,7 @@ module.exports = {
           } else { // if username not found, create one, then fetch, then return
             db.User.create({ username })
               .then(() => db.User.findOne({ username }))
-              .then(newData => res.status(200).send(newData));
+              .then(newData => res.status(201).send(newData));
           }
         });
     },
