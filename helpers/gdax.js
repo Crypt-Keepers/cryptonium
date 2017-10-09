@@ -16,7 +16,9 @@ const getTimeSeriesByRange = (coin = 'BTC', dateStart, dateEnd, granularity, cur
 
   return rp(options)
     .then(series => series)
-    .catch(err => err);
+    .catch((err) => {
+      throw err;
+    });
 };
 
 
@@ -31,7 +33,9 @@ const getTickerData = (coin = 'BTC', currency = 'USD') => {
 
   return rp(options)
     .then(data => data)
-    .catch(err => console.error(err));
+    .catch((err) => {
+      throw err;
+    });
 };
 
 module.exports.getTimeSeriesByRange = getTimeSeriesByRange;

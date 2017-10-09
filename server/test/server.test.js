@@ -104,9 +104,35 @@ describe('Cryptonoium Server tests', () => {
         .expect(200, done);
     });
 
-    it('Should result in error for invalid range request', (done) => {
+    it('Should result in error for invalid range request without any query params', (done) => {
       request
         .get('/range')
+        .expect(404, done);
+    });
+
+    it('Should result in error for invalid range coin request', (done) => {
+      request
+        .get('/range?coin=foo&dateStart=1507489906442&dateEnd=1507576306442&granularity=432000')
+        .expect(404, done);
+    });
+  });
+
+  describe('Cryptonoium Ticker tests', () => {
+    it('Should get ticker data for default coin (BTC)', (done) => {
+      request
+        .get('/ticker')
+        .expect(200, done);
+    });
+
+    it('Should get ticker data for specific coin', (done) => {
+      request
+        .get('/ticker?coin=ETH')
+        .expect(200, done);
+    });
+
+    it('Should result in error for invalid ticker coin request', (done) => {
+      request
+        .get('/ticker?coin=foo')
         .expect(404, done);
     });
   });

@@ -25,13 +25,17 @@ module.exports = {
   ticker: {
     get: (req, res) => {
       const { coin } = req.query;
-      gdax.getTickerData(coin)
-        .then((ticker) => {
-          res.json(ticker);
-        })
-        .catch((err) => {
-          res.sendStatus(404);
-        });
+      try {
+        gdax.getTickerData(coin)
+          .then((ticker) => {
+            res.json(ticker);
+          })
+          .catch((err) => {
+            res.sendStatus(404);
+          });
+      } catch (e) {
+        res.sendStatus(404);
+      }
     },
   },
   search: {
