@@ -23,7 +23,7 @@ Track Bitcoin, Litecoin, and Etherium performance and news.
 
   - Server Routes:
 
-  - Database: 
+  - Database:
 
   - D3: Data-Driven Documents (D3.js) library is implemented inside DataDisplay component and Panel-MyFinances component to graphically visualize cryptocurrency data as well as to provide graphical interface to the user. Inside DataDisplay component, D3 is used to dynamically render time series plot of the selected cryptocurrency (default is Bitcoin). User can interact with the time series plot by changing the time range of the data and re-rendering the plot as well as moving the mouse around to see the detailed cryptocurrency data at a particular time. User can also select a different cryptocurrency in the side panel to render that cryptocurrency's time series plot. Inside Panel-MyFinances subpanel, D3 is used to dynamically visualize user's current cryptocurrency holdings using a pie chart. Pie chart is dynamically updated when user adds positions to their wallet as well as when the total value of their wallet changes due to market changes.  User can interact with the pie chart by moving the mouse over to the pie chart, resulting in the transition animation of the interacting pie slice. When the user clicks on the pie slice of the cryptocurrency they are interested in, the time series plot inside DataDisplay component is dynamically changed to reflect the selection.
 
@@ -34,7 +34,7 @@ Track Bitcoin, Litecoin, and Etherium performance and news.
   - Major Components:
     - App: (see Redux)
     - DataDisplay: (see D3)
-    - Panel - Overview: 
+    - Panel - Overview:
     - Panel - MyFinances: (see D3)
     - News:
 
@@ -52,6 +52,10 @@ Track Bitcoin, Litecoin, and Etherium performance and news.
 - React 16.0.x
 - React Redux ^5.0.6
 - Webpack 3.6.x
+
+Create 'config.js' file in Server folder and add your Cryptopanic Auth Token.
+Export this token with module.exports. See ./server/constants.js for details
+on what is expected in the token.
 
 ## Development
 

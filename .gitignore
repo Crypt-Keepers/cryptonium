@@ -1,6 +1,7 @@
 ### node etc ###
 
 public/bundle.js
+server/config.js
 
 # Logs
 logs

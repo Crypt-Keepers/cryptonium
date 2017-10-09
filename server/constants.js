@@ -1,4 +1,6 @@
-const AUTH_TOKEN = process.env.AUTH_TOKEN || '98e6fad153bc3f26b19f2f27f175da2cc44b042a';
+const LOCAL_TOKEN = require('./config');
+
+const AUTH_TOKEN = process.env.AUTH_TOKEN || LOCAL_TOKEN;
 const CRYPTOPANIC_URI = 'https://cryptopanic.com/api/posts';
 
 module.exports = {
