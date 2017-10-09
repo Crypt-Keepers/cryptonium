@@ -47,23 +47,6 @@ module.exports = {
         });
     },
   },
-
-  list: {
-    get: (req, res) => {
-      models.list.get()
-        .then((data) => {
-          res.status(200).send(data);
-        })
-        .catch((err) => {
-          res.status(404).send();
-          throw err;
-        });
-    },
-    post: (req, res) => {
-
-    },
-  },
-
   user: {
     get: (req, res) => {
       const { username } = req.query;
@@ -80,11 +63,7 @@ module.exports = {
     },
     post: (req, res) => {
       const { username, coin, quantity } = req.body;
-<<<<<<< HEAD
       db.updatePosition(username, coin, Number(quantity))
-=======
-      db.updateWatchList(username, coin, quantity)
->>>>>>> (feat) Add update position
         .then(res.sendStatus(201));
     },
   },
