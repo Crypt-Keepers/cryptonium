@@ -52,6 +52,7 @@ Track Bitcoin, Litecoin, and Etherium performance and news.
 - React 16.0.x
 - React Redux ^5.0.6
 - Webpack 3.6.x
+- Request-Promise x.x.x
 
 Copy example.config.js in ./server folder and rename it to config.js. Include your
 Crytopanic API key here.
