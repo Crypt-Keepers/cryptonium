@@ -47,23 +47,6 @@ module.exports = {
         });
     },
   },
-
-  list: {
-    get: (req, res) => {
-      models.list.get()
-        .then((data) => {
-          res.status(200).send(data);
-        })
-        .catch((err) => {
-          res.status(404).send();
-          throw err;
-        });
-    },
-    post: (req, res) => {
-
-    },
-  },
-
   user: {
     get: (req, res) => {
       const { username } = req.query;
